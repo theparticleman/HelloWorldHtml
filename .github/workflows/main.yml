@@ -1,4 +1,4 @@
-name: Zip website contents
+name: Build and push artifact
 
 on:
   workflow_dispatch:
@@ -21,3 +21,6 @@ jobs:
         with:
           name: HelloWorld.1.${{github.run_number}}
           path: output.zip
+          
+      - name: Push to Octopus
+        run: curl --help
