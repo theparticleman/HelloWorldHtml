@@ -1,0 +1,23 @@
+name: Zip website contents
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  zip-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Zip contents
+        uses:  vimtor/action-zip@v1
+        with:
+          files: /
+          dest: output.zip
+      
+      - name: Save artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact
+          path: output.zip
