@@ -8,17 +8,18 @@
     </div>
   </body>
   <script async>
-    async function displayVersion() {
+    async function addElement(contentSource, prefix = "") {
       const element = document.getElementById("content");
-      const response = await fetch("version.txt");
+      const response = await fetch(contentSource);
       if (response.status !== 200) {
         return;
       }
       const content = await response.text();
       var versionElement = document.createElement("h2");
-      versionElement.innerHTML = "v" + content;
+      versionElement.innerHTML = prefix + content;
       element.appendChild(versionElement);
     }
-    displayVersion();
+    addElement("environment.txt");
+    setTimeout(() => addElement("version.txt", "v"), 100);
   </script>
 </html>
