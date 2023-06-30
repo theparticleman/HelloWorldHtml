@@ -27,4 +27,4 @@ jobs:
           path: ${{steps.package-name.outputs.name}}.zip
           
       - name: Push to Octopus
-        run: curl -X POST http://theparticleman.noip.me:8081/api/Spaces-1/packages/raw -H "X-Octopus-ApiKey: ${{secrets.OCTOPUS_API_KEY}}" -F data=@${{steps.package-name.outputs.name}}.zip
+        run: curl -X POST http://theparticleman.noip.me:8081/api/Spaces-1/packages/raw -H "X-Octopus-ApiKey:${{secrets.OCTOPUS_API_KEY}}" -F data=@${{steps.package-name.outputs.name}}.zip
