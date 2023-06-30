@@ -3,8 +3,22 @@
     <link rel="stylesheet" href="site.css" />
   </head>
   <body>
-    <div class="content">
+    <div id="content" class="content">
       <h1>Hello World</h1>
     </div>
   </body>
+  <script async>
+    async function displayVersion() {
+      const element = document.getElementById("content");
+      const response = await fetch("version.txt");
+      if (response.status !== 200) {
+        return;
+      }
+      const content = await response.text();
+      var versionElement = document.createElement("h2");
+      versionElement.innerHTML = "v" + content;
+      element.appendChild(versionElement);
+    }
+    displayVersion();
+  </script>
 </html>
