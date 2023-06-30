@@ -20,7 +20,7 @@ jobs:
         run: echo "name=HelloWorld.${{steps.version.outputs.number}}" >> $GITHUB_OUTPUT
         
       - name: Generate version file
-        run: echo "${{steps.outputs.number}}" > version.text
+        run: echo "${{steps.outputs.number}}" > version.txt
         
       - name: Zip contents
         uses:  vimtor/action-zip@v1
