@@ -10,17 +10,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         
+      - name: Generate package name
+        id: package-name
+        run: echo "name=HelloWorld.1.${{github.run_number}}" >> $GITHUB_OUTPUT
+        
       - name: Zip contents
         uses:  vimtor/action-zip@v1
         with:
           files: index.html site.css
-          dest: output.zip
+          dest: ${{steps.package-name.outputs.name}}.zip
       
       - name: Save artifact
         uses: actions/upload-artifact@v3
         with:
-          name: HelloWorld.1.${{github.run_number}}
-          path: output.zip
+          name: ${{steps.package-name.outputs.name}}
+          path: ${{steps.package-name.outputs.name}}.zip
           
       - name: Push to Octopus
-        run: curl --help
+        run: curl -X POST http://theparticleman.noip.me:8081/api/Spaces-1/packages/raw -H "X-Octopus-ApiKey: ${{secrets.OCTOPUS_API_KEY}}" -F data=@${{steps.package-name.outputs.name}}.zip
