@@ -11,14 +11,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         
+      - name: Generate version
+        id: version
+        run: echo "number=1.${{github.run_number}}" >> $GITHUB_OUTPUT
+        
       - name: Generate package name
         id: package-name
-        run: echo "name=HelloWorld.1.${{github.run_number}}" >> $GITHUB_OUTPUT
+        run: echo "name=HelloWorld.${{steps.version.outputs.number}}" >> $GITHUB_OUTPUT
+        
+      - name: Generate version file
+        run: echo "${{steps.outputs.number}}" > version.text
         
       - name: Zip contents
         uses:  vimtor/action-zip@v1
         with:
-          files: index.html site.css
+          files: index.html site.css version.txt
           dest: ${{steps.package-name.outputs.name}}.zip
       
       - name: Save artifact
