@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   push:
   
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: hello-world-html
+  
 jobs:
   zip-files:
     runs-on: ubuntu-latest
@@ -36,3 +40,37 @@ jobs:
           
       - name: Push to Octopus
         run: curl -X POST http://theparticleman.noip.me:8081/api/Spaces-1/packages/raw -H "X-Octopus-ApiKey:${{secrets.OCTOPUS_API_KEY}}" -F data=@${{steps.package-name.outputs.name}}.zip
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Generate version
+        id: version
+        run: echo "number=1.${{github.run_number}}" >> $GITHUB_OUTPUT
+      
+      - name: Generate version file
+        run: echo "${{steps.version.outputs.number}}" > version.txt
+        
+      - name: Log in to Github container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          
