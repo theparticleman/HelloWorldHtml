@@ -22,7 +22,7 @@ spec:
           - name: http
             containerPort: 80
         volumeMounts:
-        - mountPath: /usr/share/nginx/html/environment.staging.txt
+        - mountPath: /usr/share/nginx/html/environment.txt
           name: environment-volume
       volumes:
       - name: environment-volume
