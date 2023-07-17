@@ -76,6 +76,6 @@ jobs:
           context: .
           push: true
 #           tags: ${{ steps.meta.outputs.tags }}
-          tags: ghrc.io/theparticleman/helloworldhtml:${{steps.version.outputs.number}}
+          tags: ghcr.io/theparticleman/helloworldhtml:${{steps.version.outputs.number}}
           labels: ${{ steps.meta.outputs.labels }}
           
