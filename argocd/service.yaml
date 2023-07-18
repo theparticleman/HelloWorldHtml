@@ -4,7 +4,7 @@ metadata:
   name: hello-world
   namespace: hello-world
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app.kubernetes.io/name: hello-world
   ports:
