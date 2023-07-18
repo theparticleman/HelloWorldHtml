@@ -4,7 +4,7 @@ metadata:
   name: hello-world
   namespace: hello-world
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app.kubernetes.io/name: hello-world
   ports:
